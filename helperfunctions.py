@@ -11,13 +11,11 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 
 from skimage.feature import hog
-from tqdm import tqdm
 
-
+## Default parameters
 
 image = mpimg.imread('test_images/test1.jpg')
 heatmap_template = np.zeros_like(image[:, :, 0]).astype(np.float)
-
 
 # Define a function to return HOG features and visualization
 def get_hog_features(img, orient, pix_per_cell, cell_per_block,
@@ -71,7 +69,7 @@ def extract_features(imgs, color_space='RGB', spatial_size=(32, 32),
     # Create a list to append feature vectors to
     features = []
     # Iterate through the list of images
-    for file in tqdm(imgs):
+    for file in imgs:
         file_features = []
         # Read in each one by one
         image = mpimg.imread(file)
@@ -286,7 +284,6 @@ def search_windows(img, windows, clf, scaler, color_space='RGB',
     return on_windows
 
 
-
 def add_heat(heatmap, box_list):
     """Returns `heatmap` with bounding boxes in `box_list` added to it.
     `box_list` is an array of boxes.
@@ -339,10 +336,6 @@ def create_heatmaps(all_bboxes, recent_frames_used=10, threshold=0):
         # Don't know what this is for:
         # final_map = np.clip(heat - 2, 0, 255)
     return heatmap_list
-
-## 5. Estimate a bounding box for vehicles detected.
-
-# Combine multiple detections
 
 def draw_labeled_bboxes(img, labels):
     """Return image with bounding boxes drawn around the labelled regions.

@@ -10,8 +10,8 @@ The goals / steps of this project are the following:
 * Estimate a bounding box for vehicles detected.
 
 [//]: # (Image References)
-[image1]: ./output_images/sliding.png
-[image2]: ./output_images/sliding1.png
+[image1]: ./output_images/slidding.png
+[image2]: ./output_images/slidding1.png
 [video1]: ./output.mp4
 
 
@@ -53,8 +53,10 @@ I trained a linear SVM using all the HOG extracted features of all the channels 
 
 Sliding window is just a windowing function or a convolution in whole image to search for the car and if it is found we make a box. Searching fairly starighforward based on the heat map of boxes, we selected that area.
 
-
 Initially I trained the model using singla channel HOG Features , the performance of the model was around 95 %, then by including all the features. it increased. Instead of RGB , using YcrBr, proved to be better as accuracy went from 97 % to 98%.
+Following steps are followed: -
+* Lime the search space to lower half of the image `y_start_stop` because cars only appear in certain area i.e, only on road.
+* For each window, extract features for that window and scale extracted features to be fed to the classifier predict whether the window contains a car using our trained Linear SVM classifier,and save the window if the classifier predicts there is a car in that window.
 
 ![alt text][image1]
 ![alt text][image2]
@@ -62,9 +64,15 @@ Initially I trained the model using singla channel HOG Features , the performanc
 
 ### Video Implementation
 
-The whole pipeline that has been developed for a single image, is used to the whole video where each frame of the video is being used.
-Here's a [link to my video result](./project_video.mp4)
+The whole pipeline that has been developed for a single image, is used to the whole video where each frame of the video is being used and also the past 20 frames were used to create the heatmap and then get that block.
+Following steps are followed: -
+* Find the classified windows in the image
+* Using past 20 frames generate a heatmap of these positions.
+* Threshold the heatmap to identify vehicle positions.
+* Determine their x and y lengths, identify the heatmap generated areas.
+* Draw Boxes over detected areas.
 
+Output Video ![alt text][video1]
 
 ---
 
